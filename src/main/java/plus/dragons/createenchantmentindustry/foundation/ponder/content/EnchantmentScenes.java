@@ -657,16 +657,11 @@ public class EnchantmentScenes {
     }
 
     private static ItemStack enchantingGuide(Enchantment enchantment, int level) {
-		if (enchantment == Enchantments.MENDING) {
-            scene.overlay.showText(40)
-                .text("Mending is not allowed")
-                .colored(PonderPalette.RED)
-                .placeNearTarget()
-                .pointAt(util.vector.topOf(3, 4, 0));
-			return;
-        }
         var ret = CeiItems.ENCHANTING_GUIDE.asStack();
         ret.getOrCreateTag().putInt("index", 0);
+		if (enchantment == Enchantments.MENDING) {
+			return ret;
+        }
         var book = Items.ENCHANTED_BOOK.getDefaultInstance();
         EnchantmentHelper.setEnchantments(Map.of(enchantment, level), book);
         ret.getOrCreateTag().put("target", NBTSerializer.serializeNBT(book));
