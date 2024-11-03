@@ -15,7 +15,7 @@ import plus.dragons.createenchantmentindustry.entry.CeiFluids;
 public class MendingBySpout {
 
     public static boolean canItemBeMended(Level world, ItemStack stack) {
-        return stack.isDamaged() && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, stack) > 0;
+        return false; // 禁用经验修补
     }
 
     public static int getRequiredAmountForItem(Level world, ItemStack stack, FluidStack availableFluid) {
