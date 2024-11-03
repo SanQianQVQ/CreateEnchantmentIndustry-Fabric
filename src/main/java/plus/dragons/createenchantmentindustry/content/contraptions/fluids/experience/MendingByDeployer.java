@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MendingByDeployer {
     public static boolean canItemBeMended(ItemStack stack) {
-        return stack.isDamaged() && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MENDING, stack) > 0;
+        return false; // 禁用经验修补
     }
 
     public static int getRequiredAmountForItem(ItemStack stack) {
