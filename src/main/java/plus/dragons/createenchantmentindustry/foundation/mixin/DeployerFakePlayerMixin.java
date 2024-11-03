@@ -27,11 +27,12 @@ public class DeployerFakePlayerMixin {
 				return;
 
 			ItemStack deployerTool = fakePlayer.getInventory().getItem(0);
-			if(MendingByDeployer.canItemBeMended(deployerTool)) {
+			// 禁用经验修补
+			/*if(MendingByDeployer.canItemBeMended(deployerTool)) {
 				fakePlayer.getInventory().setItem(0, MendingByDeployer.mendItem(xp, deployerTool));
 				xp = MendingByDeployer.getNewXp(xp, deployerTool);
 				cir.setReturnValue(xp);
-			}
+			}*/
 
 			int amount = xp / 3 + (fakePlayer.getRandom().nextInt(3) < xp % 3 ? 1 : 0);
 			if (amount <= 0) return;
