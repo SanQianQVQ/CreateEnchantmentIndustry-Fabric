@@ -108,7 +108,6 @@ public class EnchantmentScenes {
                 .pointAt(util.vector.topOf(1, 1, 1));
         scene.idle(30);
         scene.world.setBlock(util.grid.at(1, 1, 1), CeiBlocks.BLAZE_ENCHANTER.getDefaultState(), false);
-        scene.world.modifyBlockEntity(util.grid.at(1, 1, 1), BlazeEnchanterBlockEntity.class, be -> be.setTargetItem(enchantingGuide(Enchantments.MENDING, 1)));
         scene.idle(25);
 
         scene.overlay.showText(100)
@@ -130,7 +129,6 @@ public class EnchantmentScenes {
         scene.idle(25);
 
         scene.world.setBlock(util.grid.at(1, 1, 1), CeiBlocks.BLAZE_ENCHANTER.getDefaultState(), false);
-        scene.world.modifyBlockEntity(util.grid.at(1, 1, 1), BlazeEnchanterBlockEntity.class, be -> be.setTargetItem(enchantingGuide(Enchantments.MENDING, 1)));
         scene.idle(10);
 
         scene.world.setBlock(util.grid.at(1, 1, 1), AllBlocks.BLAZE_BURNER.getDefaultState().setValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.KINDLED), false);
@@ -166,10 +164,6 @@ public class EnchantmentScenes {
         });
         scene.world.modifyBlockEntity(util.grid.at(0, 2, 6), BlazeEnchanterBlockEntity.class, be -> {
             be.setTargetItem(enchantingGuide(Enchantments.THORNS, 2));
-			TransferUtil.insertFluid(be.getFluidStorage(null),new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000));
-		});
-        scene.world.modifyBlockEntity(util.grid.at(6, 2, 7), BlazeEnchanterBlockEntity.class, be -> {
-            be.setTargetItem(enchantingGuide(Enchantments.MENDING, 1));
 			TransferUtil.insertFluid(be.getFluidStorage(null),new FluidStack(CeiFluids.EXPERIENCE.get().getSource(), 1000));
 		});
         scene.world.modifyBlockEntity(util.grid.at(7, 2, 1), BlazeEnchanterBlockEntity.class, be -> {
@@ -648,6 +642,9 @@ public class EnchantmentScenes {
     }
 
     private static void enchantItem(ItemStack itemStack, Enchantment enchantment, int level) {
+		if (enchantment == Enchantments.MENDING) {
+            return; // 禁止附加经验修补附魔
+        }
         var m = EnchantmentHelper.getEnchantments(itemStack);
         m.put(enchantment, level);
         EnchantmentHelper.setEnchantments(m, itemStack);
@@ -655,11 +652,19 @@ public class EnchantmentScenes {
 
     private static void enchantRandomly(ItemStack itemStack) {
         if (itemStack.is(Items.ENCHANTED_BOOK)) {
-            enchantItem(itemStack, Enchantments.MENDING, 1);
+            return; // 禁止随机附加经验修补附魔
         } else EnchantmentHelper.enchantItem(RandomSource.create(), itemStack, 30, true);
     }
 
     private static ItemStack enchantingGuide(Enchantment enchantment, int level) {
+		if (enchantment == Enchantments.MENDING) {
+            scene.overlay.showText(40)
+                .text("Mending is not allowed")
+                .colored(PonderPalette.RED)
+                .placeNearTarget()
+                .pointAt(util.vector.topOf(3, 4, 0));
+			return;
+        }
         var ret = CeiItems.ENCHANTING_GUIDE.asStack();
         ret.getOrCreateTag().putInt("index", 0);
         var book = Items.ENCHANTED_BOOK.getDefaultInstance();
