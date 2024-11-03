@@ -16,27 +16,30 @@ import plus.dragons.createenchantmentindustry.content.contraptions.fluids.experi
 public class FillingBySpoutMixin {
     @Inject(method = "canItemBeFilled", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/fluids/transfer/GenericItemFilling;canItemBeFilled(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;)Z"), cancellable = true)
     private static void canItemBeMended(Level world, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (MendingBySpout.canItemBeMended(world, stack))
-            cir.setReturnValue(true);
+        // 禁用经验修补
+        /*if (MendingBySpout.canItemBeMended(world, stack))
+            cir.setReturnValue(true);*/
     }
 
     @Inject(method = "getRequiredAmountForItem",
-			at = @At(value = "INVOKE",
-					target = "Lcom/simibubi/create/content/fluids/transfer/GenericItemFilling;getRequiredAmountForItem(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;Lio/github/fabricators_of_create/porting_lib/fluids/FluidStack;)J"),
-			cancellable = true)
+            at = @At(value = "INVOKE",
+                    target = "Lcom/simibubi/create/content/fluids/transfer/GenericItemFilling;getRequiredAmountForItem(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;Lio/github/fabricators_of_create/porting_lib/fluids/FluidStack;)J"),
+            cancellable = true)
     private static void getRequiredXpAmountForItem(Level world, ItemStack stack, FluidStack availableFluid, CallbackInfoReturnable<Long> cir) {
-        int amount = MendingBySpout.getRequiredAmountForItem(world, stack, availableFluid);
+        // 禁用经验修补
+        /*int amount = MendingBySpout.getRequiredAmountForItem(world, stack, availableFluid);
         if (amount > 0)
-            cir.setReturnValue((long) amount);
+            cir.setReturnValue((long) amount);*/
     }
 
     @Inject(method = "fillItem",
-			at = @At(value = "INVOKE",
-					target = "Lcom/simibubi/create/content/fluids/transfer/GenericItemFilling;fillItem(Lnet/minecraft/world/level/Level;JLnet/minecraft/world/item/ItemStack;Lio/github/fabricators_of_create/porting_lib/fluids/FluidStack;)Lnet/minecraft/world/item/ItemStack;"),
-			cancellable = true)
+            at = @At(value = "INVOKE",
+                    target = "Lcom/simibubi/create/content/fluids/transfer/GenericItemFilling;fillItem(Lnet/minecraft/world/level/Level;JLnet/minecraft/world/item/ItemStack;Lio/github/fabricators_of_create/porting_lib/fluids/FluidStack;)Lnet/minecraft/world/item/ItemStack;"),
+            cancellable = true)
     private static void mendItem(Level world, long requiredAmount, ItemStack stack, FluidStack availableFluid, CallbackInfoReturnable<ItemStack> cir) {
-        ItemStack result = MendingBySpout.mendItem(world, (int) requiredAmount, stack, availableFluid);
+        // 禁用经验修补
+        /*ItemStack result = MendingBySpout.mendItem(world, (int) requiredAmount, stack, availableFluid);
         if (result != null)
-            cir.setReturnValue(result);
+            cir.setReturnValue(result);*/
     }
 }
